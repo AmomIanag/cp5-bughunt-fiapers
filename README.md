@@ -15,7 +15,7 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 8 / 12 |
+| **Total de bugs corrigidos** | 9 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
 | **Total de testes novos escritos** | 2 / 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
@@ -37,7 +37,7 @@
 | bug06 | O teste deveRecusarAgendamentoComHorarioJaOcupado mostrava que um novo atendimento para o mesmo pet e no mesmo horário era salvo em vez de lançar HorarioOcupadoException. | Em AgendaService.java, no método agendar(), nome do pet e data/hora eram comparados com ==. Como String e LocalDateTime são objetos, == compara referências de memória e não o conteúdo dos objetos. | As comparações foram alteradas para .equals(), fazendo a verificação considerar valores equivalentes mesmo quando estão armazenados em objetos diferentes. | Comparação de objetos em Java: == compara referências, enquanto .equals() compara igualdade de conteúdo conforme a implementação da classe. |
 | bug07 | O teste deveLancarExcecaoQuandoAtendimentoNaoExiste mostrava que buscar um ID inexistente retornava null em vez de lançar AtendimentoNaoEncontradoException. | Em AgendaService.java, aproximadamente nas linhas 36–42, o método buscarPorId() lançava corretamente a exceção com orElseThrow(), mas um catch (Exception e) genérico capturava essa exceção e retornava null. | O try/catch genérico foi removido, permitindo que AtendimentoNaoEncontradoException seja propagada normalmente pelo orElseThrow(). | Tratamento de exceções e uso de Optional.orElseThrow(): exceções de negócio não devem ser capturadas e silenciosamente convertidas em valores inválidos como null. |
 | bug08 | O novo teste de preço do banho mostrou que pets de porte PEQUENO recebiam preço de 100 Reais e pets GRANDES recebiam R$ 60, contrariando o contrato. | Em `Banho.java`, aproximadamente nas linhas 26–33, o método `calcularPreco()` retornava os valores de PEQUENO e GRANDE invertidos. | Os retornos foram corrigidos para R$ 60 no porte PEQUENO, R$ 80 no MEDIO e R$ 100 no GRANDE. | Polimorfismo e regras de negócio no model: a sobrescrita de `calcularPreco()` deve implementar corretamente o comportamento específico de `Banho`. |
-| bug09 | | | | |
+| bug09 | O novo teste `deveDurar60Minutos` mostrava que a Tosa não retornava a duração de 60 minutos definida no contrato. | Em `Tosa.java`, o método foi declarado como `getDuracaoMinutos(String porte)`, enquanto o método herdado não recebe parâmetros. Isso criava uma sobrecarga em vez de sobrescrever o método da classe pai. | A assinatura foi corrigida para `getDuracaoMinutos()` e foi adicionada a anotação `@Override`. | Sobrescrita vs sobrecarga: override mantém a mesma assinatura do método herdado e altera seu comportamento; overload cria outro método com parâmetros diferentes. |
 | bug10 | | | | |
 | bug11 | | | | |
 | bug12 | | | | |
