@@ -46,7 +46,7 @@
 
 | # | Onde estava | Qual princípio/boas práticas era violado | O que eu mudei |
 |---|---|---|---|
-| clean01 | | | |
+| clean01 | `AtendimentoFactory.java`, método `criar()` | Os parâmetros utilizavam nomes de uma única letra, como `p`, `t`, `n`, `po`, `tu` e `d`, dificultando a compreensão do código. | Os parâmetros foram renomeados para `protocolo`, `tipo`, `petNome`, `petPorte`, `tutorNome` e `dataHora`, deixando sua finalidade explícita. |
 | clean02 | | | |
 | clean03 | | | |
 | clean04 | | | |
