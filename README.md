@@ -15,7 +15,7 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 10 / 12 |
+| **Total de bugs corrigidos** | 11 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
 | **Total de testes novos escritos** | 5 / 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
@@ -39,7 +39,7 @@
 | bug08 | O novo teste de preço do banho mostrou que pets de porte PEQUENO recebiam preço de 100 Reais e pets GRANDES recebiam R$ 60, contrariando o contrato. | Em `Banho.java`, aproximadamente nas linhas 26–33, o método `calcularPreco()` retornava os valores de PEQUENO e GRANDE invertidos. | Os retornos foram corrigidos para R$ 60 no porte PEQUENO, R$ 80 no MEDIO e R$ 100 no GRANDE. | Polimorfismo e regras de negócio no model: a sobrescrita de `calcularPreco()` deve implementar corretamente o comportamento específico de `Banho`. |
 | bug09 | O novo teste `deveDurar60Minutos` mostrava que a Tosa não retornava a duração de 60 minutos definida no contrato. | Em `Tosa.java`, o método foi declarado como `getDuracaoMinutos(String porte)`, enquanto o método herdado não recebe parâmetros. Isso criava uma sobrecarga em vez de sobrescrever o método da classe pai. | A assinatura foi corrigida para `getDuracaoMinutos()` e foi adicionada a anotação `@Override`. | Sobrescrita vs sobrecarga: override mantém a mesma assinatura do método herdado e altera seu comportamento; overload cria outro método com parâmetros diferentes. |
 | bug10 | O novo teste `deveRecusarAgendamentoComDataHoraNoPassado` mostrou que um atendimento com data/hora passada não era recusado e o serviço chegava a acessar o repositório. | Em `AgendaService.java`, no início do método `agendar()`, não existia validação da data/hora antes da consulta ao repository. | Foi adicionada uma validação com `isBefore(LocalDateTime.now())` que lança `IllegalArgumentException` antes de qualquer acesso ao repositório. | Validação de regras de negócio e fail-fast: entradas inválidas devem ser rejeitadas o mais cedo possível, evitando processamento e acesso desnecessário à camada de persistência. |
-| bug11 | | | | |
+| bug11 | O novo teste `deveRecusarCancelamentoDeAtendimentoConcluido` mostrou que um atendimento com status `CONCLUIDO` podia ser alterado para `CANCELADO`. | Em `Atendimento.java`, aproximadamente nas linhas 62–65, o método `cancelar()` alterava diretamente o status para `CANCELADO` sem verificar o estado atual do atendimento. | Foi adicionada uma validação que permite o cancelamento somente quando o status é `AGENDADO`; nos demais estados é lançada `StatusInvalidoException`. | Encapsulamento de regras de negócio e controle de transição de estado: o próprio model deve impedir mudanças de status inválidas. |
 | bug12 | | | | |
 
 ## Parte 2 — Ajustes de Clean Code
