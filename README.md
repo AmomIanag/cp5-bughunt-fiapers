@@ -15,9 +15,9 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 1 / 12 |
-| **Total de ajustes de Clean Code** | ___ / 6 |
-| **Total de testes novos escritos** | ___ / 6 |
+| **Total de bugs corrigidos** | 2 / 12 |
+| **Total de ajustes de Clean Code** | 0 / 6 |
+| **Total de testes novos escritos** | 0/ 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
 
 ---
@@ -29,8 +29,8 @@
 
 | # | Sintoma observado (o que fiz/vi) | Causa raiz (arquivo e linha aproximada) | Correção aplicada | Conceito da disciplina |
 |---|---|---|---|---|
-| bug01 | O GeradorProtocolo retornava instâncias diferentes e não mantinha uma sequência global de protocolos. |O método getInstancia() criava um novo GeradorProtocolo quandoinstancia era null, mas não armazenava esse objeto no atributo estático instancia. |O objeto criado passou a ser atribuído ao atributo instancia antesde ser retornado.|Padrão de projeto Singleton, que garante uma única instânciacompartilhada da classe durante a execução. |
-| bug02 | | | | |
+| bug01 | Os testes mostravam que GeradorProtocolo.getInstancia() retornava instâncias diferentes e que os protocolos não mantinham uma sequência global. | Em GeradorProtocolo.java, aproximadamente nas linhas 17–21, o método getInstancia() criava um novo GeradorProtocolo quando instancia era null, mas não armazenava o objeto no atributo estático instancia. | O novo objeto passou a ser atribuído a instancia antes do retorno, garantindo que as chamadas seguintes reutilizem o mesmo objeto. | Padrão de projeto Singleton: garante uma única instância compartilhada da classe e, neste caso, preserva o contador global de protocolos. |
+| bug02 | O teste deveCriarTosaQuandoTipoForTosa mostrava que, ao solicitar um atendimento do tipo TOSA, o objeto criado era da classe Banho. | Em AtendimentoFactory.java, no case "TOSA" do método criar(), a Factory instanciava new Banho(...) em vez de new Tosa(...). | A instanciação do case "TOSA" foi alterada para new Tosa(...), fazendo a Factory criar a subclasse correspondente ao tipo solicitado. | Padrão de projeto Factory: centraliza a criação dos objetos concretos e deve selecionar corretamente a implementação de acordo com o tipo recebido. |
 | bug03 | | | | |
 | bug04 | | | | |
 | bug05 | | | | |
