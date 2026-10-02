@@ -17,7 +17,7 @@
 |---|---|
 | **Total de bugs corrigidos** | 8 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
-| **Total de testes novos escritos** | 1/ 6 |
+| **Total de testes novos escritos** | 2 / 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
 
 ---
@@ -63,7 +63,7 @@
 | # | Teste escrito (classe.método) | Regra coberta | Resultado ao escrever (vermelho/verde) |
 |---|---|---|---|
 | teste01 | BanhoTest.deveCalcularPrecoCorretoQuandoPorteVariar | O preço do banho deve variar conforme o porte: 60 reais para PEQUENO, 80 reais para MEDIO e 100 reais para GRANDE. | Vermelho — revelou o bug08: os preços dos portes PEQUENO e GRANDE estavam invertidos. |
-| teste02 | | | |
+| teste02 | `TosaTest.deveDurar60Minutos` | A Tosa deve ter duração de 60 minutos. | Vermelho — revelou o bug09: o método de duração da Tosa não sobrescrevia corretamente o método da classe pai. |
 | teste03 | | | |
 | teste04 | | | |
 | teste05 | | | |
