@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
@@ -110,4 +111,24 @@ public class AgendaServiceTest {
         // Act + Assert
         assertThrows(AtendimentoNaoEncontradoException.class, () -> service.buscarPorId(99L));
     }
+
+    @Test
+    public void deveRecusarAgendamentoComDataHoraNoPassado() {
+        // Arrange
+        Banho banhoNoPassado = new Banho(
+                2,
+                "Rex",
+                "PEQUENO",
+                "Ana",
+                LocalDateTime.now().minusDays(1).withNano(0)
+        );
+
+        // Act + Assert
+        assertThrows(IllegalArgumentException.class,
+                () -> service.agendar(banhoNoPassado));
+
+        // O banco nem deve ser consultado
+        verifyNoInteractions(repository);
+    }
+
 }
