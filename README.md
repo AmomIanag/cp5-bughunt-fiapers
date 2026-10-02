@@ -15,7 +15,7 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 9 / 12 |
+| **Total de bugs corrigidos** | 10 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
 | **Total de testes novos escritos** | 4 / 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
@@ -38,7 +38,7 @@
 | bug07 | O teste deveLancarExcecaoQuandoAtendimentoNaoExiste mostrava que buscar um ID inexistente retornava null em vez de lançar AtendimentoNaoEncontradoException. | Em AgendaService.java, aproximadamente nas linhas 36–42, o método buscarPorId() lançava corretamente a exceção com orElseThrow(), mas um catch (Exception e) genérico capturava essa exceção e retornava null. | O try/catch genérico foi removido, permitindo que AtendimentoNaoEncontradoException seja propagada normalmente pelo orElseThrow(). | Tratamento de exceções e uso de Optional.orElseThrow(): exceções de negócio não devem ser capturadas e silenciosamente convertidas em valores inválidos como null. |
 | bug08 | O novo teste de preço do banho mostrou que pets de porte PEQUENO recebiam preço de 100 Reais e pets GRANDES recebiam R$ 60, contrariando o contrato. | Em `Banho.java`, aproximadamente nas linhas 26–33, o método `calcularPreco()` retornava os valores de PEQUENO e GRANDE invertidos. | Os retornos foram corrigidos para R$ 60 no porte PEQUENO, R$ 80 no MEDIO e R$ 100 no GRANDE. | Polimorfismo e regras de negócio no model: a sobrescrita de `calcularPreco()` deve implementar corretamente o comportamento específico de `Banho`. |
 | bug09 | O novo teste `deveDurar60Minutos` mostrava que a Tosa não retornava a duração de 60 minutos definida no contrato. | Em `Tosa.java`, o método foi declarado como `getDuracaoMinutos(String porte)`, enquanto o método herdado não recebe parâmetros. Isso criava uma sobrecarga em vez de sobrescrever o método da classe pai. | A assinatura foi corrigida para `getDuracaoMinutos()` e foi adicionada a anotação `@Override`. | Sobrescrita vs sobrecarga: override mantém a mesma assinatura do método herdado e altera seu comportamento; overload cria outro método com parâmetros diferentes. |
-| bug10 | | | | |
+| bug10 | O novo teste `deveRecusarAgendamentoComDataHoraNoPassado` mostrou que um atendimento com data/hora passada não era recusado e o serviço chegava a acessar o repositório. | Em `AgendaService.java`, no início do método `agendar()`, não existia validação da data/hora antes da consulta ao repository. | Foi adicionada uma validação com `isBefore(LocalDateTime.now())` que lança `IllegalArgumentException` antes de qualquer acesso ao repositório. | Validação de regras de negócio e fail-fast: entradas inválidas devem ser rejeitadas o mais cedo possível, evitando processamento e acesso desnecessário à camada de persistência. |
 | bug11 | | | | |
 | bug12 | | | | |
 
