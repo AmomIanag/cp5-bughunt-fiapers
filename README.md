@@ -18,7 +18,7 @@
 | **Total de bugs corrigidos** | 12 / 12 |
 | **Total de ajustes de Clean Code** | 6 / 6 |
 | **Total de testes novos escritos** | 6 / 6 |
-| **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
+| **Suíte final (Run As → JUnit Test)** | 26 testes, 0 falhas |
 
 ---
 
@@ -81,16 +81,22 @@ O projeto chegou com 20 testes, 9 vermelhos. Descreva como você usou as
 mensagens de falha (ex.: `expected: <Rex> but was: <null>`) para caçar os bugs.
 O que a suíte de testes tem de melhor do que testar tudo na mão com curl?
 
+R: A suíte mostrou exatamente quais comportamentos o sistema deveria cumprir. Começamos com 20 testes, sendo 9 vermelhos, e usamos as mensagens de falha para localizar as causas no código. Por exemplo, quando o teste esperava o nome do pet e recebia `null`, encontramos o problema no construtor de `ConsultaVeterinaria`. Também encontramos o erro `petNome = petNome` no Builder a partir de um teste que falhava. Depois de cada correção, rodamos a suíte inteira para verificar se não criamos regressões. Isso é melhor do que testar tudo manualmente com curl porque os testes são automáticos, rápidos e conseguem verificar regras isoladas sem precisar subir a API ou o banco.
+
 ### 2. Mock e injeção de dependência (Aulas 13 a 15)
 No `AgendaServiceTest`, o `@Mock` cria um `AtendimentoRepository` falso e o
 `@InjectMocks` o injeta no service. Explique a relação disso com o `@Autowired`
 que o Spring faz em produção — quem "injeta" em cada mundo, e por que o teste
 consegue rodar sem banco e sem subir o Spring?
 
+R: No `AgendaServiceTest`, o `@Mock` cria um `AtendimentoRepository` falso e o `@InjectMocks` coloca esse mock dentro do `AgendaService`. Em produção, quem faz essa injeção é o Spring, fornecendo o repository real para o service. Durante o Clean Code, alteramos a injeção por atributo para injeção pelo construtor, deixando a dependência explícita. Nos testes, o Mockito faz esse papel sem precisar do Spring. Por isso conseguimos testar métodos como `agendar()` e `buscarPorId()` sem Oracle e sem subir a aplicação. Também podemos controlar exatamente o que métodos como `findById()` devem retornar em cada cenário.
+
 ### 3. `==` vs `.equals()` (Aula 7)
 Um dos bugs fazia o agendamento duplicado passar pela verificação de conflito.
 Explique por que `==` entre Strings e `LocalDateTime` falhou aqui, por que ele
 "funciona por sorte" com literais como `"Rex"`, e o que a sua correção mudou.
+
+R: O bug de conflito de horário acontecia porque `AgendaService` comparava `String` e `LocalDateTime` usando `==`. Em objetos, `==` verifica se as referências apontam para o mesmo objeto, e não se os valores são iguais. Com Strings como `"Rex"`, isso pode funcionar por sorte por causa do String Pool. Já dois objetos `LocalDateTime` diferentes podem representar exatamente o mesmo horário e ainda resultar em `false` com `==`. A correção foi usar `.equals()`, que compara os valores dos objetos. Depois disso, o sistema passou a detectar corretamente atendimentos do mesmo pet no mesmo horário.
 
 ### 4. Sobrescrita vs sobrecarga (Aula 7)
 Um dos bugs compilava sem nenhum erro: um método parecia sobrescrever
@@ -98,16 +104,22 @@ Um dos bugs compilava sem nenhum erro: um método parecia sobrescrever
 diferença entre override e overload nesse caso e por que a anotação `@Override`
 teria impedido o bug.
 
+R: Na classe `Tosa`, existia `getDuracaoMinutos(String porte)`, enquanto a classe pai possuía `getDuracaoMinutos()` sem parâmetros. Como as assinaturas eram diferentes, o método de `Tosa` era uma sobrecarga, e não uma sobrescrita. Por isso, ao chamar `getDuracaoMinutos()`, o sistema continuava usando o método herdado e retornava a duração errada. Corrigimos a assinatura para `getDuracaoMinutos()` e adicionamos `@Override`. A sobrescrita substitui um comportamento herdado, enquanto a sobrecarga cria outro método com parâmetros diferentes. O `@Override` também ajuda o compilador a detectar esse tipo de erro.
+
 ### 5. Singleton manual vs bean do Spring (Aula 14)
 O `GeradorProtocolo` é um Singleton escrito à mão e causou um dos bugs.
 Explique o que ele garante, qual foi o bug, e por que o `AgendaService`
 (`@Service`) não corre o mesmo risco no container do Spring.
+
+R: O `GeradorProtocolo` usa Singleton para garantir uma única instância e manter uma sequência global de protocolos. O bug acontecia porque `getInstancia()` criava um novo objeto, mas não o armazenava no atributo estático `instancia`. Assim, chamadas diferentes podiam usar contadores diferentes. A correção foi salvar o objeto criado em `instancia` e reutilizá-lo depois. Já o `AgendaService` possui `@Service` e é controlado pelo container do Spring. Por padrão, o Spring gerencia uma única instância desse bean, então não precisamos implementar manualmente um Singleton para ele.
 
 ### 6. Cobertura de testes: onde parar? (Aula 15)
 Dos 6 testes novos que você escreveu, alguns ficaram vermelhos (revelaram
 bugs) e outros verdes de cara (regras já corretas). Vale a pena manter os que
 ficaram verdes? Em um projeto real com prazo, o que você priorizaria testar:
 caminho feliz, caminhos de erro, ou 100% de cobertura? Justifique.
+
+R: Dos seis testes novos, alguns ficaram vermelhos e revelaram bugs, enquanto outros ficaram verdes porque a regra já estava correta. Mesmo assim, os testes verdes devem ser mantidos, pois protegem comportamentos como o preço fixo da consulta e o cancelamento de um atendimento `AGENDADO`. Os testes vermelhos encontraram problemas importantes, como preço incorreto do Banho, duração da Tosa e agendamento no passado. Em um projeto real, eu priorizaria regras de negócio importantes, caminhos de erro e os principais caminhos felizes. Não buscaria 100% de cobertura apenas pelo número. O mais importante é ter testes que protejam os comportamentos críticos do sistema.
 
 ---
 
