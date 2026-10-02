@@ -15,7 +15,7 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 5 / 12 |
+| **Total de bugs corrigidos** | 6 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
 | **Total de testes novos escritos** | 0/ 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
@@ -34,7 +34,7 @@
 | bug03 | O teste devePreencherOsDadosDoPetNaConsulta mostrava que uma consulta criada pela Factory retornava null para dados como nome e porte do pet. | Em ConsultaVeterinaria.java, aproximadamente na linha 17, o construtor recebia os dados do atendimento, mas chamava apenas super(), deixando os atributos herdados de Atendimento sem inicialização. | O construtor passou a chamar super(protocolo, petNome, petPorte, tutorNome, dataHora), repassando os dados para o construtor da classe pai. | Herança e chamada de construtor com super(...): a subclasse deve inicializar corretamente o estado herdado da superclasse. |
 | bug04 | O teste deveMontarAtendimentoCompleto mostrava que o nome do pet ficava null mesmo após chamar comPet("Rex", "PEQUENO"). | Em AtendimentoBuilder.java, aproximadamente nas linhas 23–26, o método comPet() fazia petNome = petNome, atribuindo o parâmetro a ele mesmo e deixando o atributo da classe sem valor. | A atribuição foi alterada para this.petNome = petNome, diferenciando o atributo da instância do parâmetro recebido. | Uso de this e encapsulamento de estado: this.petNome referencia o atributo do objeto, enquanto petNome referencia o parâmetro local do método. |
 | bug05 | Os testes deveRecusarMontagemSemNomeDoPet e deveRecusarMontagemSemPorte mostravam que o Builder permitia criar atendimentos mesmo sem informações obrigatórias do pet. | Em AtendimentoBuilder.java, no método construir(), o atendimento era enviado diretamente para a Factory sem validar se petNome e petPorte estavam preenchidos. | Foi adicionada uma validação em construir() que lança IllegalArgumentException quando o nome ou o porte do pet são nulos, impedindo a criação de um objeto inválido. | Padrão Builder e validação de estado: o objeto deve ser validado no momento da construção para garantir que somente instâncias válidas sejam criadas. |
-| bug06 | | | | |
+| bug06 | O teste deveRecusarAgendamentoComHorarioJaOcupado mostrava que um novo atendimento para o mesmo pet e no mesmo horário era salvo em vez de lançar HorarioOcupadoException. | Em AgendaService.java, no método agendar(), nome do pet e data/hora eram comparados com ==. Como String e LocalDateTime são objetos, == compara referências de memória e não o conteúdo dos objetos. | As comparações foram alteradas para .equals(), fazendo a verificação considerar valores equivalentes mesmo quando estão armazenados em objetos diferentes. | Comparação de objetos em Java: == compara referências, enquanto .equals() compara igualdade de conteúdo conforme a implementação da classe. |
 | bug07 | | | | |
 | bug08 | | | | |
 | bug09 | | | | |
