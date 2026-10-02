@@ -10,7 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BanhoTest {
 
     private Banho banhoDoRex() {
-        return new Banho(1, "Rex", "PEQUENO", "Ana", LocalDateTime.of(2026, 10, 1, 10, 0));
+        return new Banho(
+                1,
+                "Rex",
+                "PEQUENO",
+                "Ana",
+                LocalDateTime.of(2026, 10, 1, 10, 0)
+        );
     }
 
     @Test
@@ -29,5 +35,25 @@ public class BanhoTest {
 
         // Assert
         assertEquals(45, duracao);
+    }
+
+    @Test
+    public void deveCalcularPrecoCorretoQuandoPorteVariar() {
+        // Arrange
+        LocalDateTime dataHora = LocalDateTime.of(2026, 10, 1, 10, 0);
+
+        Banho pequeno = new Banho(1, "Rex", "PEQUENO", "Ana", dataHora);
+        Banho medio = new Banho(2, "Rex", "MEDIO", "Ana", dataHora);
+        Banho grande = new Banho(3, "Rex", "GRANDE", "Ana", dataHora);
+
+        // Act
+        double precoPequeno = pequeno.calcularPreco();
+        double precoMedio = medio.calcularPreco();
+        double precoGrande = grande.calcularPreco();
+
+        // Assert
+        assertEquals(60.0, precoPequeno, 0.001);
+        assertEquals(80.0, precoMedio, 0.001);
+        assertEquals(100.0, precoGrande, 0.001);
     }
 }

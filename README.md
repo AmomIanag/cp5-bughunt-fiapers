@@ -62,7 +62,7 @@
 
 | # | Teste escrito (classe.método) | Regra coberta | Resultado ao escrever (vermelho/verde) |
 |---|---|---|---|
-| teste01 | | | |
+| teste01 | BanhoTest.deveCalcularPrecoCorretoQuandoPorteVariar | O preço do banho deve variar conforme o porte: R$ 60 para PEQUENO, R$ 80 para MEDIO e R$ 100 para GRANDE. | Vermelho — revelou o bug08: os preços dos portes PEQUENO e GRANDE estavam invertidos. |
 | teste02 | | | |
 | teste03 | | | |
 | teste04 | | | |
