@@ -131,4 +131,21 @@ public class AgendaServiceTest {
         verifyNoInteractions(repository);
     }
 
+    @Test
+    public void deveRecusarCancelamentoDeAtendimentoConcluido() {
+        // Arrange
+        Banho jaConcluido = banhoDoRexAmanha10h();
+        jaConcluido.setStatus("CONCLUIDO");
+
+        when(repository.findById(1L))
+                .thenReturn(Optional.of(jaConcluido));
+
+        // Act + Assert
+        assertThrows(StatusInvalidoException.class,
+                () -> service.cancelar(1L));
+
+        // Nada deve ser salvo quando o cancelamento e recusado
+        verify(repository, never()).save(any());
+    }
+
 }

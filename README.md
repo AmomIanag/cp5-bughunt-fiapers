@@ -17,7 +17,7 @@
 |---|---|
 | **Total de bugs corrigidos** | 10 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
-| **Total de testes novos escritos** | 4 / 6 |
+| **Total de testes novos escritos** | 5 / 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
 
 ---
@@ -66,7 +66,7 @@
 | teste02 | `TosaTest.deveDurar60Minutos` | A Tosa deve ter duração de 60 minutos. | Vermelho — revelou o bug09: o método de duração da Tosa não sobrescrevia corretamente o método da classe pai. |
 | teste03 | `ConsultaVeterinariaTest.deveCustar150ReaisIndependenteDoPorte` | A consulta veterinária deve custar R$ 150,00 independentemente do porte do pet. | Verde de cara — a regra já estava implementada corretamente. |
 | teste04 | `AgendaServiceTest.deveRecusarAgendamentoComDataHoraNoPassado` | Um atendimento com data/hora no passado deve lançar `IllegalArgumentException` antes de qualquer acesso ao repositório. | Vermelho — revelou o bug10: o serviço não validava a data/hora antes de consultar e salvar no repositório. |
-| teste05 | | | |
+| teste05 | `AgendaServiceTest.deveRecusarCancelamentoDeAtendimentoConcluido` | Um atendimento já CONCLUIDO não pode ser cancelado e deve lançar `StatusInvalidoException`, sem salvar alterações no repositório. | Vermelho — revelou o bug11: o método `cancelar()` permitia cancelar um atendimento já concluído. |
 | teste06 | | | |
 
 ---
