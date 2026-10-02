@@ -17,7 +17,7 @@
 |---|---|
 | **Total de bugs corrigidos** | 9 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
-| **Total de testes novos escritos** | 2 / 6 |
+| **Total de testes novos escritos** | 3 / 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
 
 ---
@@ -64,7 +64,7 @@
 |---|---|---|---|
 | teste01 | BanhoTest.deveCalcularPrecoCorretoQuandoPorteVariar | O preço do banho deve variar conforme o porte: 60 reais para PEQUENO, 80 reais para MEDIO e 100 reais para GRANDE. | Vermelho — revelou o bug08: os preços dos portes PEQUENO e GRANDE estavam invertidos. |
 | teste02 | `TosaTest.deveDurar60Minutos` | A Tosa deve ter duração de 60 minutos. | Vermelho — revelou o bug09: o método de duração da Tosa não sobrescrevia corretamente o método da classe pai. |
-| teste03 | | | |
+| teste03 | `ConsultaVeterinariaTest.deveCustar150ReaisIndependenteDoPorte` | A consulta veterinária deve custar R$ 150,00 independentemente do porte do pet. | Verde de cara — a regra já estava implementada corretamente. |
 | teste04 | | | |
 | teste05 | | | |
 | teste06 | | | |
