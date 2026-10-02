@@ -17,7 +17,7 @@
 |---|---|
 | **Total de bugs corrigidos** | 11 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
-| **Total de testes novos escritos** | 5 / 6 |
+| **Total de testes novos escritos** | 6 / 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
 
 ---
@@ -67,7 +67,7 @@
 | teste03 | `ConsultaVeterinariaTest.deveCustar150ReaisIndependenteDoPorte` | A consulta veterinária deve custar R$ 150,00 independentemente do porte do pet. | Verde de cara — a regra já estava implementada corretamente. |
 | teste04 | `AgendaServiceTest.deveRecusarAgendamentoComDataHoraNoPassado` | Um atendimento com data/hora no passado deve lançar `IllegalArgumentException` antes de qualquer acesso ao repositório. | Vermelho — revelou o bug10: o serviço não validava a data/hora antes de consultar e salvar no repositório. |
 | teste05 | `AgendaServiceTest.deveRecusarCancelamentoDeAtendimentoConcluido` | Um atendimento já CONCLUIDO não pode ser cancelado e deve lançar `StatusInvalidoException`, sem salvar alterações no repositório. | Vermelho — revelou o bug11: o método `cancelar()` permitia cancelar um atendimento já concluído. |
-| teste06 | | | |
+| teste06 | `AgendaServiceTest.deveCancelarAtendimentoAgendado` | Um atendimento com status `AGENDADO` deve poder ser cancelado, passando para `CANCELADO` e sendo salvo no repositório. | Verde de cara — a regra já estava implementada corretamente. |
 
 ---
 
