@@ -15,7 +15,7 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 6 / 12 |
+| **Total de bugs corrigidos** | 7 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
 | **Total de testes novos escritos** | 0/ 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
@@ -35,7 +35,7 @@
 | bug04 | O teste deveMontarAtendimentoCompleto mostrava que o nome do pet ficava null mesmo após chamar comPet("Rex", "PEQUENO"). | Em AtendimentoBuilder.java, aproximadamente nas linhas 23–26, o método comPet() fazia petNome = petNome, atribuindo o parâmetro a ele mesmo e deixando o atributo da classe sem valor. | A atribuição foi alterada para this.petNome = petNome, diferenciando o atributo da instância do parâmetro recebido. | Uso de this e encapsulamento de estado: this.petNome referencia o atributo do objeto, enquanto petNome referencia o parâmetro local do método. |
 | bug05 | Os testes deveRecusarMontagemSemNomeDoPet e deveRecusarMontagemSemPorte mostravam que o Builder permitia criar atendimentos mesmo sem informações obrigatórias do pet. | Em AtendimentoBuilder.java, no método construir(), o atendimento era enviado diretamente para a Factory sem validar se petNome e petPorte estavam preenchidos. | Foi adicionada uma validação em construir() que lança IllegalArgumentException quando o nome ou o porte do pet são nulos, impedindo a criação de um objeto inválido. | Padrão Builder e validação de estado: o objeto deve ser validado no momento da construção para garantir que somente instâncias válidas sejam criadas. |
 | bug06 | O teste deveRecusarAgendamentoComHorarioJaOcupado mostrava que um novo atendimento para o mesmo pet e no mesmo horário era salvo em vez de lançar HorarioOcupadoException. | Em AgendaService.java, no método agendar(), nome do pet e data/hora eram comparados com ==. Como String e LocalDateTime são objetos, == compara referências de memória e não o conteúdo dos objetos. | As comparações foram alteradas para .equals(), fazendo a verificação considerar valores equivalentes mesmo quando estão armazenados em objetos diferentes. | Comparação de objetos em Java: == compara referências, enquanto .equals() compara igualdade de conteúdo conforme a implementação da classe. |
-| bug07 | | | | |
+| bug07 | O teste deveLancarExcecaoQuandoAtendimentoNaoExiste mostrava que buscar um ID inexistente retornava null em vez de lançar AtendimentoNaoEncontradoException. | Em AgendaService.java, aproximadamente nas linhas 36–42, o método buscarPorId() lançava corretamente a exceção com orElseThrow(), mas um catch (Exception e) genérico capturava essa exceção e retornava null. | O try/catch genérico foi removido, permitindo que AtendimentoNaoEncontradoException seja propagada normalmente pelo orElseThrow(). | Tratamento de exceções e uso de Optional.orElseThrow(): exceções de negócio não devem ser capturadas e silenciosamente convertidas em valores inválidos como null. |
 | bug08 | | | | |
 | bug09 | | | | |
 | bug10 | | | | |
