@@ -16,7 +16,7 @@
 | Campo | |
 |---|---|
 | **Total de bugs corrigidos** | 12 / 12 |
-| **Total de ajustes de Clean Code** | 5 / 6 |
+| **Total de ajustes de Clean Code** | 6 / 6 |
 | **Total de testes novos escritos** | 6 / 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
 
@@ -51,7 +51,7 @@
 | clean03 | `AtendimentoController.java` | O `AgendaService` era injetado diretamente no atributo com `@Autowired`, deixando a dependência implícita e mutável. | A injeção foi alterada para o construtor e o atributo `service` passou a ser `final`, tornando a dependência explícita e imutável após a criação do controller. |
 | clean04 | `AgendaService.java`, método `agendar()` | O service utilizava `System.out.println()` para imprimir um recibo, misturando a regra de negócio de agendamento com uma responsabilidade de saída/apresentação. | A impressão no console foi removida e o método passou a apenas validar, persistir e retornar o atendimento agendado. |
 | clean05 | `GeradorProtocolo.java`, construtor | O construtor utilizava `System.out.println()` para informar a criação do Singleton, adicionando uma saída no console que não fazia parte da responsabilidade da classe. | A impressão no console foi removida, deixando o `GeradorProtocolo` responsável apenas pelo controle da instância e pela geração sequencial dos protocolos. |
-| clean06 | | | |
+| clean06 | `AtendimentoController.java` | Existia um método `calcularDescontoFidelidade()` que não era utilizado pelo sistema e representava uma funcionalidade futura ainda não aprovada. | O método e os comentários relacionados à funcionalidade futura foram removidos, eliminando código morto e mantendo o controller apenas com responsabilidades atuais. |
 
 ## Parte 3 — Testes novos (regras que estavam sem cobertura)
 
