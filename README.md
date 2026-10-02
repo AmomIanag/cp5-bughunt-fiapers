@@ -5,7 +5,7 @@
 
 ## Identificação
 
-**Grupo:** ___
+**Grupo:** Fiapers
 
 | Integrante | RM | Turma |
 |---|---|---|
@@ -15,7 +15,7 @@
 
 | Campo | |
 |---|---|
-| **Total de bugs corrigidos** | 11 / 12 |
+| **Total de bugs corrigidos** | 12 / 12 |
 | **Total de ajustes de Clean Code** | 0 / 6 |
 | **Total de testes novos escritos** | 6 / 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
@@ -40,7 +40,7 @@
 | bug09 | O novo teste `deveDurar60Minutos` mostrava que a Tosa não retornava a duração de 60 minutos definida no contrato. | Em `Tosa.java`, o método foi declarado como `getDuracaoMinutos(String porte)`, enquanto o método herdado não recebe parâmetros. Isso criava uma sobrecarga em vez de sobrescrever o método da classe pai. | A assinatura foi corrigida para `getDuracaoMinutos()` e foi adicionada a anotação `@Override`. | Sobrescrita vs sobrecarga: override mantém a mesma assinatura do método herdado e altera seu comportamento; overload cria outro método com parâmetros diferentes. |
 | bug10 | O novo teste `deveRecusarAgendamentoComDataHoraNoPassado` mostrou que um atendimento com data/hora passada não era recusado e o serviço chegava a acessar o repositório. | Em `AgendaService.java`, no início do método `agendar()`, não existia validação da data/hora antes da consulta ao repository. | Foi adicionada uma validação com `isBefore(LocalDateTime.now())` que lança `IllegalArgumentException` antes de qualquer acesso ao repositório. | Validação de regras de negócio e fail-fast: entradas inválidas devem ser rejeitadas o mais cedo possível, evitando processamento e acesso desnecessário à camada de persistência. |
 | bug11 | O novo teste `deveRecusarCancelamentoDeAtendimentoConcluido` mostrou que um atendimento com status `CONCLUIDO` podia ser alterado para `CANCELADO`. | Em `Atendimento.java`, aproximadamente nas linhas 62–65, o método `cancelar()` alterava diretamente o status para `CANCELADO` sem verificar o estado atual do atendimento. | Foi adicionada uma validação que permite o cancelamento somente quando o status é `AGENDADO`; nos demais estados é lançada `StatusInvalidoException`. | Encapsulamento de regras de negócio e controle de transição de estado: o próprio model deve impedir mudanças de status inválidas. |
-| bug12 | | | | |
+| bug12 | A suíte permanecia verde, mas durante o code review foi identificado que a entidade `Atendimento` não possuía geração automática para sua chave primária. Em uma persistência real, novos atendimentos poderiam ser enviados ao banco com `id` nulo. | Em `Atendimento.java`, aproximadamente nas linhas 14–15, o atributo `id` possuía apenas `@Id`, sem uma estratégia de geração de identificador. | Foi adicionada a anotação `@GeneratedValue(strategy = GenerationType.IDENTITY)` ao atributo `id`, deixando a geração da chave primária sob responsabilidade do banco/JPA. | JPA e persistência de entidades: chaves primárias geradas automaticamente devem declarar uma estratégia de geração com `@GeneratedValue`. |
 
 ## Parte 2 — Ajustes de Clean Code
 
