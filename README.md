@@ -16,7 +16,7 @@
 | Campo | |
 |---|---|
 | **Total de bugs corrigidos** | 12 / 12 |
-| **Total de ajustes de Clean Code** | 3 / 6 |
+| **Total de ajustes de Clean Code** | 4 / 6 |
 | **Total de testes novos escritos** | 6 / 6 |
 | **Suíte final (Run As → JUnit Test)** | ___ testes, ___ falhas |
 
@@ -49,7 +49,7 @@
 | clean01 | `AtendimentoFactory.java`, método `criar()` | Os parâmetros utilizavam nomes de uma única letra, como `p`, `t`, `n`, `po`, `tu` e `d`, dificultando a compreensão do código. | Os parâmetros foram renomeados para `protocolo`, `tipo`, `petNome`, `petPorte`, `tutorNome` e `dataHora`, deixando sua finalidade explícita. |
 | clean02 | `AgendaService.java` | O `AtendimentoRepository` era injetado diretamente no atributo com `@Autowired`, escondendo a dependência da classe e impedindo o uso de um campo `final`. | A dependência passou a ser recebida pelo construtor e o atributo foi declarado como `final`, tornando a dependência explícita e imutável após a criação do service. |
 | clean03 | `AtendimentoController.java` | O `AgendaService` era injetado diretamente no atributo com `@Autowired`, deixando a dependência implícita e mutável. | A injeção foi alterada para o construtor e o atributo `service` passou a ser `final`, tornando a dependência explícita e imutável após a criação do controller. |
-| clean04 | | | |
+| clean04 | `AgendaService.java`, método `agendar()` | O service utilizava `System.out.println()` para imprimir um recibo, misturando a regra de negócio de agendamento com uma responsabilidade de saída/apresentação. | A impressão no console foi removida e o método passou a apenas validar, persistir e retornar o atendimento agendado. |
 | clean05 | | | |
 | clean06 | | | |
 
